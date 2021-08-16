@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using firstWebApi.Models;
@@ -8,6 +9,24 @@ namespace firstWebApi.Services
     public class PokemonService : IPokemonService
     {
         private readonly string baseUrl = "https://pokeapi.co/api/v2/pokemon/";
+
+        public List<PokemonDB> getAllPokemonsFromDb()
+        {
+            
+            List<PokemonDB> allPkms = new List<PokemonDB>();
+
+            PokemonDB pkm1 = new PokemonDB();
+
+            pkm1.id = 8;
+            pkm1.name = "Blastoise";
+            pkm1.competitivo = true;
+
+            allPkms.Add(pkm1);
+
+            return allPkms;
+
+        }
+
         public async Task<Pokemon> GetPokemon(int id)
         {
              using (HttpClient httpClient = new HttpClient())
@@ -42,5 +61,6 @@ namespace firstWebApi.Services
         {
             return true;
         }
+
     }
 }

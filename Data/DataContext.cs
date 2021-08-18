@@ -10,8 +10,6 @@ namespace firstWebApi.Data
         public DbSet<Usuario> Usuarios { get; set; }
 
         public DbSet<PokemonDB> Pokemons { get; set; }
-
-
-
+        
     }
 }

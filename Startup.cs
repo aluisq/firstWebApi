@@ -1,18 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using firstWebApi.Data;
+using firstWebApi.Models;
 using firstWebApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace firstWebApi
@@ -30,21 +35,69 @@ namespace firstWebApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-
             // Registrando o contexto do Banco na aplicação
             services.AddDbContext<DataContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
 
+            // Authorization c/ JWT aplicando o tipo de comportamente para validação do Token
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => 
+                {
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters{
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
+                        .GetBytes(Configuration.GetSection("AppSetting: SecretKey").Value))
+                    };
+                }
+            );
+
+
+
+            // Registro de usuario pela aplicação
+            IdentityBuilder builder = services.AddIdentityCore<Usuario>(options => 
+                {
+                    // Remover ao máximo o que é padrão
+
+                    // Caracteres Especiais
+                    options.Password.RequireDigit = false;
+                    
+                    // Numeros e letras
+                    options.Password.RequireNonAlphanumeric = false;
+                    
+                    //Letras minusculas 
+                    options.Password.RequireLowercase = false;
+
+                    // Letras maiusculas
+                    options.Password.RequireUppercase = false;
+
+                    // Tamanho minimo da senha
+                    options.Password.RequiredLength = 4;
+                }
+            );
+
+
+
+            // builder = new IdentityBuilder(builder.UserType, typeof(Role), builder.Services);
+            
+
+            // Precisa IMPLEMENTAR O BUILDER
+            //+
+            //+
+            // .............
+            
+
+            // ADDMVC -  Série de configurações automaticamente prontas, como autorização, mapeamento, views, mecanismo do Razor, etc.
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            // Implemetar os controllers Criados
             services.AddControllers();
             
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "firstWebApi", Version = "v1" });
             });
-
                services.AddScoped<IPokemonService, PokemonService>();
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

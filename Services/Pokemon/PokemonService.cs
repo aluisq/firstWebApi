@@ -3,28 +3,28 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using firstWebApi.Models;
 using Newtonsoft.Json;
+using firstWebApi.Data;
+using System.Linq;
 
 namespace firstWebApi.Services
 {
     public class PokemonService : IPokemonService
     {
+        
+        private readonly DataContext _context;
+
         private readonly string baseUrl = "https://pokeapi.co/api/v2/pokemon/";
+
+        public PokemonService(DataContext context)
+        {
+            _context = context;
+        }
 
         public List<PokemonDB> getAllPokemonsFromDb()
         {
-            
-            List<PokemonDB> allPkms = new List<PokemonDB>();
+            IQueryable<PokemonDB> pkms = _context.Pokemons.Select(pkm => pkm);
 
-            PokemonDB pkm1 = new PokemonDB();
-
-            pkm1.id = 8;
-            pkm1.name = "Blastoise";
-            pkm1.competitivo = true;
-
-            allPkms.Add(pkm1);
-
-            return allPkms;
-
+            return pkms.ToList();
         }
 
         public async Task<Pokemon> GetPokemon(int id)

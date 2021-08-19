@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using firstWebApi.Data;
 
 namespace firstWebApi.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210818122158_MoreFieldsUSers")]
+    partial class MoreFieldsUSers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,34 +41,25 @@ namespace firstWebApi.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("active")
+                    b.Property<int>("idade")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("createdAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("department")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("fullname")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("lastAccess")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("login")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("nivelPermissao")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("password")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("role")
+                    b.Property<string>("setor")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("updatedAt")
+                    b.Property<DateTime>("ultimoAcesso")
                         .HasColumnType("TEXT");
 
                     b.HasKey("id");

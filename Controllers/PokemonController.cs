@@ -40,12 +40,10 @@ namespace firstWebApi.Controllers
 
         [HttpGet("infoDb")]
         public List<PokemonDB> getInfoFromDb(){
-
-            var teste = _context.Pokemons.Select(pkm => pkm);
             
             List<PokemonDB> result = _pokemonService.getAllPokemonsFromDb();
 
-            return teste.ToList();
+            return result;
         }
 
          [HttpGet("infoDb/{id}")]

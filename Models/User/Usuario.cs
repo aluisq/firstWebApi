@@ -1,8 +1,9 @@
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace firstWebApi.Models
 {
-    public class Usuario
+    public class Usuario : IdentityUser
     {
         public int id { get; set; }
         public string fullname { get; set; }

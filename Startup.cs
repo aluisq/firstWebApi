@@ -40,6 +40,7 @@ namespace firstWebApi
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
 
+
             // Authorization c/ JWT aplicando o tipo de comportamente para validação do Token
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => 
@@ -51,7 +52,6 @@ namespace firstWebApi
                     };
                 }
             );
-
 
 
             // Registro de usuario pela aplicação
@@ -76,10 +76,8 @@ namespace firstWebApi
                 }
             );
 
+            builder = new IdentityBuilder(builder.UserType, typeof(Usuario), builder.Services);
 
-
-            // builder = new IdentityBuilder(builder.UserType, typeof(Role), builder.Services);
-            
 
             // Precisa IMPLEMENTAR O BUILDER
             //+
@@ -97,7 +95,10 @@ namespace firstWebApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "firstWebApi", Version = "v1" });
             });
-               services.AddScoped<IPokemonService, PokemonService>();
+            
+            services.AddScoped<IPokemonService, PokemonService>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

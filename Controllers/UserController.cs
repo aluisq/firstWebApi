@@ -18,11 +18,11 @@ namespace firstWebApi.Controllers
         }
 
         [HttpGet("all")]
-        public IActionResult GetUser(){
+        public async Task<IActionResult> GetUsers(){
             
-            User user = _userService.GetUser();
+            Task<List<User>> user = _userService.GetUsers();
 
-            return Ok(user);
+            return  Ok(await user);
 
         }
 

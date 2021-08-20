@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using firstWebApi.Data.UserRepository;
 
 namespace firstWebApi.Services.User
@@ -12,11 +14,11 @@ namespace firstWebApi.Services.User
             _userRepository = userRepository;
         }
 
-        public Models.User GetUser()
+        public async Task<List<Models.User>> GetUsers()
         {
-          Models.User user = _userRepository.GetUser();
+          Task <List<Models.User>> user =  _userRepository.GetUsers();
 
-          return user;
+          return await user;
         }
     }
 }

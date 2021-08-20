@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using firstWebApi.Models;
 
 namespace firstWebApi.Data.UserRepository
@@ -19,14 +22,14 @@ namespace firstWebApi.Data.UserRepository
             return newUser;
         }
 
-        public User GetUser()
+        public async Task <List<User>> GetUsers()
         {
-             
-            User userDTO = new User(){
-                Id = 1
-            };
+            
+           Task <IQueryable<User>> userDTO =  Task.Run(() => _dataContext.Usuarios.Select(x => x));
 
-            return userDTO;
+           var user = await userDTO;
+
+            return user.ToList();
         }
 
         public User UpdateOneUser(User user)

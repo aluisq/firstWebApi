@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using firstWebApi.Models;
 
 namespace firstWebApi.Data.UserRepository
@@ -7,6 +9,6 @@ namespace firstWebApi.Data.UserRepository
         User CreateOneUser(User user); 
 
         User UpdateOneUser(User user);
-        User GetUser();
+        Task <List<User>> GetUsers();
     }
 }

@@ -7,7 +7,7 @@ namespace firstWebApi.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options){}
         
-        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<User> Usuarios { get; set; }
 
         public DbSet<PokemonDB> Pokemons { get; set; }
         

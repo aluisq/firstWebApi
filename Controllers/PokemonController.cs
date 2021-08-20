@@ -9,13 +9,14 @@ using Newtonsoft.Json;
 using System.Linq;
 using firstWebApi.Services;
 using firstWebApi.Data;
+using System.Web;
 
 namespace firstWebApi.Controllers
 {
 
     [ApiController]
     [Route("/pokemon")]
-    public class PokemonController
+    public class PokemonController : Controller
     {
         private readonly ILogger<PokemonController> _logger;
 
@@ -53,6 +54,14 @@ namespace firstWebApi.Controllers
         
         }
 
+
+        [HttpGet("teste")]
+        public async Task<IActionResult> teste(){
+
+            await Task.Delay(2000);
+
+            return Ok("???");
+        }
 
     }
 

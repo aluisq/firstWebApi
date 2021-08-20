@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using firstWebApi.Data;
+using firstWebApi.Data.UserRepository;
 using firstWebApi.Models;
 using firstWebApi.Services;
+using firstWebApi.Services.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,42 +43,42 @@ namespace firstWebApi
             );
 
 
-            // Authorization c/ JWT aplicando o tipo de comportamente para validação do Token
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => 
-                {
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters{
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
-                        .GetBytes(Configuration.GetSection("AppSetting: SecretKey").Value))
-                    };
-                }
-            );
+            // // Authorization c/ JWT aplicando o tipo de comportamente para validação do Token
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //     .AddJwtBearer(options => 
+            //     {
+            //         options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters{
+            //             ValidateIssuerSigningKey = true,
+            //             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
+            //             .GetBytes(Configuration.GetSection("AppSetting: SecretKey").Value))
+            //         };
+            //     }
+            // );
 
 
-            // Registro de usuario pela aplicação
-            IdentityBuilder builder = services.AddIdentityCore<Usuario>(options => 
-                {
-                    // Remover ao máximo o que é padrão
+            // // Registro de usuario pela aplicação
+            // IdentityBuilder builder = services.AddIdentityCore<Usuario>(options => 
+            //     {
+            //         // Remover ao máximo o que é padrão
 
-                    // Caracteres Especiais
-                    options.Password.RequireDigit = false;
+            //         // Caracteres Especiais
+            //         options.Password.RequireDigit = false;
                     
-                    // Numeros e letras
-                    options.Password.RequireNonAlphanumeric = false;
+            //         // Numeros e letras
+            //         options.Password.RequireNonAlphanumeric = false;
                     
-                    //Letras minusculas 
-                    options.Password.RequireLowercase = false;
+            //         //Letras minusculas 
+            //         options.Password.RequireLowercase = false;
 
-                    // Letras maiusculas
-                    options.Password.RequireUppercase = false;
+            //         // Letras maiusculas
+            //         options.Password.RequireUppercase = false;
 
-                    // Tamanho minimo da senha
-                    options.Password.RequiredLength = 4;
-                }
-            );
+            //         // Tamanho minimo da senha
+            //         options.Password.RequiredLength = 4;
+            //     }
+            // );
 
-            builder = new IdentityBuilder(builder.UserType, typeof(Usuario), builder.Services);
+            // builder = new IdentityBuilder(builder.UserType, typeof(Usuario), builder.Services);
 
 
             // Precisa IMPLEMENTAR O BUILDER
@@ -96,7 +98,10 @@ namespace firstWebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "firstWebApi", Version = "v1" });
             });
             
+            // Registrando as Interfaces
             services.AddScoped<IPokemonService, PokemonService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
 
         }

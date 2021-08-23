@@ -25,7 +25,7 @@ namespace firstWebApi.Data.UserRepository
         public async Task <List<User>> GetUsers()
         {
             
-           Task <IQueryable<User>> userDTO =  Task.Run(() => _dataContext.Usuarios.Select(x => x));
+           Task <IQueryable<User>> userDTO =  Task.Run(() => _dataContext.Users.Select(x => x));
 
            var user = await userDTO;
 

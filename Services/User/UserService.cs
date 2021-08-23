@@ -14,6 +14,15 @@ namespace firstWebApi.Services.User
             _userRepository = userRepository;
         }
 
+        public async Task <Models.User> getUserByID(int id)
+        {
+           
+           Task <Models.User> user =  _userRepository.GetUserById(id);
+
+            return await user;
+           
+        }
+
         public async Task<List<Models.User>> GetUsers()
         {
           Task <List<Models.User>> user =  _userRepository.GetUsers();

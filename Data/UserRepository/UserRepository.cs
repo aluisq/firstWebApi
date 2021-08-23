@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using firstWebApi.Models;
@@ -16,16 +17,26 @@ namespace firstWebApi.Data.UserRepository
 
         public User CreateOneUser(User user)
         {
-            
             User newUser = new User();
             
             return newUser;
         }
 
-        public async Task <List<User>> GetUsers()
+        public async Task<User> GetUserById(int id)
         {
+
+            Task <User> taskGetOneUser = Task.Run(()=>  _dataContext.Users.FirstOrDefault<User>((u=> u.Id == id) ));
+
+            User user = await taskGetOneUser;
+
+            return user;
+
+        }
+
+        public async Task <List<User>> GetUsers()
+        { 
             
-           Task <IQueryable<User>> userDTO =  Task.Run(() => _dataContext.Usuarios.Select(x => x));
+           Task <IQueryable<User>> userDTO =  Task.Run(() => _dataContext.Users.Select(x => x));
 
            var user = await userDTO;
 
@@ -36,5 +47,6 @@ namespace firstWebApi.Data.UserRepository
         {
             return new User();
         }
+
     }
 }

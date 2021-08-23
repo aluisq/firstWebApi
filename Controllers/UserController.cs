@@ -26,5 +26,14 @@ namespace firstWebApi.Controllers
 
         }
 
+        [HttpGet("{id}")]
+        public async Task<Models.User> getUserByID(int id){
+            
+            Task<Models.User> user =  _userService.getUserByID(id);
+            
+            return await user;
+
+        }
+
     }
 }

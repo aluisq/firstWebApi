@@ -10,5 +10,8 @@ namespace firstWebApi.Data.UserRepository
 
         User UpdateOneUser(User user);
         Task <List<User>> GetUsers();
+
+        Task <User> GetUserById(int id);
+
     }
 }

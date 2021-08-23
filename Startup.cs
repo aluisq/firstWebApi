@@ -43,49 +43,27 @@ namespace firstWebApi
             );
 
 
-            // // Authorization c/ JWT aplicando o tipo de comportamente para validação do Token
-            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //     .AddJwtBearer(options => 
-            //     {
-            //         options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters{
-            //             ValidateIssuerSigningKey = true,
-            //             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
-            //             .GetBytes(Configuration.GetSection("AppSetting: SecretKey").Value))
-            //         };
-            //     }
-            // );
+            var key = Encoding.ASCII.GetBytes("depoisprecisoconfigurarisso");
 
+            services.AddAuthentication(x =>
+            {	
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
 
-            // // Registro de usuario pela aplicação
-            // IdentityBuilder builder = services.AddIdentityCore<Usuario>(options => 
-            //     {
-            //         // Remover ao máximo o que é padrão
-
-            //         // Caracteres Especiais
-            //         options.Password.RequireDigit = false;
-                    
-            //         // Numeros e letras
-            //         options.Password.RequireNonAlphanumeric = false;
-                    
-            //         //Letras minusculas 
-            //         options.Password.RequireLowercase = false;
-
-            //         // Letras maiusculas
-            //         options.Password.RequireUppercase = false;
-
-            //         // Tamanho minimo da senha
-            //         options.Password.RequiredLength = 4;
-            //     }
-            // );
-
-            // builder = new IdentityBuilder(builder.UserType, typeof(Usuario), builder.Services);
-
-
-            // Precisa IMPLEMENTAR O BUILDER
-            //+
-            //+
-            // .............
-            
+            services.AddCors();
 
             // ADDMVC -  Série de configurações automaticamente prontas, como autorização, mapeamento, views, mecanismo do Razor, etc.
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
@@ -116,10 +94,12 @@ namespace firstWebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "firstWebApi v1"));
             }
 
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

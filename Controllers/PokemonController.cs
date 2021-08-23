@@ -10,6 +10,7 @@ using System.Linq;
 using firstWebApi.Services;
 using firstWebApi.Data;
 using System.Web;
+using Microsoft.AspNetCore.Authorization;
 
 namespace firstWebApi.Controllers
 {
@@ -56,6 +57,7 @@ namespace firstWebApi.Controllers
 
 
         [HttpGet("teste")]
+        [Authorize]
         public async Task<IActionResult> teste(){
 
             await Task.Delay(2000);
